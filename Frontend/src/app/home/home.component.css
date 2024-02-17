@@ -1,0 +1,82 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Signika+Negative:wght@600&display=swap');
+section{
+    background-color: #F5f5f5;
+    animation: animSection .5s ease-in-out;
+}
+
+
+
+.pro-opp-span{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+   
+    
+}
+
+
+
+p{
+    font-size: 55px;
+   
+    font-family: 'Signika Negative', sans-serif;}
+
+.login-btn{
+    color: #FFFFFF;
+    padding: .5rem 2rem;
+    font-weight: 500; /* Red with 85% opacity */
+
+}
+
+.login-btn:hover{
+    background-color: transparent;
+    color: #000;
+    border: 1px solid #0d6efd
+}
+
+.signup-btn{
+    background-color: #000;
+    color: #ffffff;
+    padding: 1.3rem 8rem;
+    font-weight: 700;
+    transition: .2s ease-in-out;
+
+}
+
+.signup-btn.bgCol{
+    background-color: #000;
+    color: #FFFFFF;
+}
+.signup-btn:hover{
+    border: 1px solid #000;
+}
+
+.signup-btn:f{
+    background-color: #000;
+}
+
+
+@media(max-width: 768px){
+    .signup-btn-container{
+        width: fit-content;
+        margin-inline: auto
+    }
+}
+@media (max-width: 512px) {
+    
+    .signup-btn{
+        padding: 1rem 4rem;
+        margin: auto;
+    }
+
+
+    
+}
+
+
+@keyframes animSection {
+    from{opacity: 0;}to{opacity: 1;}
+    
+}
