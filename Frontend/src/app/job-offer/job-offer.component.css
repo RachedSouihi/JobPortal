@@ -1,0 +1,87 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+.job-offer-section-parent{
+    position: relative;
+    background-color: #F5F5F5;
+
+ 
+}
+.job-offer{
+    position: relative;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    border: 6px double #000;
+    border-radius: 15px;
+    padding: 15px;
+    cursor: pointer;
+    height: 250px;
+    transition: .3s ease;
+
+    
+}
+
+
+.job-offer:hover{
+    /*background-color: #e9ecef;
+    color: #FFFFFF;*/
+}
+
+.filter-section{
+    border: 1px solid #000;
+}
+
+.job-offer-section-div{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    max-height: 100%;
+    overflow: auto;
+    
+    
+    
+    
+
+
+}
+
+.salary-company-address{
+    display: flex;
+    flex-direction: column;
+    
+    
+}
+
+.skill{
+    border: 1px solid #000;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+.show-job-details{
+   
+    /*display: none;*/
+    background-color: #000;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    max-width: 500px;
+    color: #ffff;
+   /*transform: translateX(500px)*/
+  
+
+
+ 
+}
+
+.employment-type--job-det, .working-schedule--job-det, .job-desc--job-det, .experience--job-det{
+    font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  
+}
+
+

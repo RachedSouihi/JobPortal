@@ -1,0 +1,156 @@
+<div style="height: 100%; display: flex; flex-direction: column; overflow-x: hidden;">
+    <app-nav class="app-nav"></app-nav>
+
+
+    <div class="row job-offer-section-parent" #job_offer_section_parent>
+        <div class="col-3 filter-section p-4">
+            <h3>Filter</h3>
+
+            <div>
+                <span>Employment type</span>
+
+                <div class="container">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="full time" id="full-time"
+                            (input)="filter('employmentType', $event)">
+                        <label class="form-check-label" for="full-time">
+                            Full time
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="full day" id="full-day"
+                            (input)="filter('employmentType', $event)">
+                        <label class="form-check-label" for="full-day">
+                            Full day
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="part time" id="part-time"
+                            (input)="filter('EmploymentType', $event)">
+                        <label class="form-check-label" for="part-time">
+                            Part time
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="contract work" id="contract-work"
+                            (input)="filter('EmploymentType', $event)">
+                        <label class="form-check-label" for="contract-work">
+                            Contract Work
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="freelancing" id="freelancing"
+                            (input)="filter('EmploymentType', $event)">
+                        <label class="form-check-label" for="freelancing">
+                            Freelancing
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <div class="">
+                <span>Job type</span>
+
+                <div class="container">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="job" id="job"
+                            (input)="filter('jobType', $event)">
+                        <label class="form-check-label" for="job">
+                            Job
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="internship" id="internship"
+                            (input)="filter('jobType', $event)">
+                        <label class="form-check-label" for="internship">
+                            Internship
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-9 job-offer-section-div p-3" style="border: 1px solid #000;">
+
+            @for (job of jobOfferToDisplayed; track job) {
+            @if(job !== null){
+            <div class="job-offer" (click)="setJobDetails(job)">
+
+                <h6 class="company-name text-dark">{{job['companyName']}}</h6>
+                <h4 class="job-title text-primary">{{job['jobTitle']}}</h4>
+
+
+                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                    @for(skill of job.skills; track skill){
+                    <span class="skill">{{skill}}</span>
+                    }
+                </div>
+                <div class="salary-company-address">
+                    <span>{{job.salary}}</span>
+
+                    <span>{{job['companyLocation']}}</span>
+                </div>
+
+            </div>
+            }}
+
+
+
+
+
+
+            <div class="show-job-details p-5">
+                @if(jobDetails !== null){
+                <h3>{{jobDetails['jobTitle']}}</h3>
+                <h4>{{jobDetails['companyName']}}</h4>
+                <p>{{jobDetails['companyLocation']}}</p>
+                <div class="d-flex">
+                    <span class="working-schedule--job-det text-info">Working schedule: </span>
+                    <p class="mx-2">{{jobDetails['workingSchedule']}}</p>
+
+                </div>
+
+                <div class="d-flex">
+                    <span class="employment-type--job-det text-info">Employment type: </span>
+                    <p class="mx-2">{{jobDetails['employmentType']}}</p>
+                </div>
+
+                <div class="d-flex flex-wrap">
+                    @for(skill of jobDetails["skills"]; track skill){
+                    <span class="m-2">{{skill.skill}}</span>
+                    }
+                </div>
+
+                <div>
+                    <span class="job-desc--job-det text-info">Job description: </span>
+                    <p>{{jobDetails["jobDesc"]}}</p>
+                </div>
+
+                <div>
+                    <span class="exprience--job-det text-info">Experience: </span>
+                    <span>{{jobDetails['experience']}}</span>
+                </div>
+
+                @if(!userData.hiring_manager){
+                <div class="row mx-auto mt-3">
+                    <button class="btn btn-primary" (click)="applyForJob()">Apply</button>
+                </div>
+
+                }
+                }
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
