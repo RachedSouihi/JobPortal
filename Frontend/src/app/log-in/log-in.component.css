@@ -1,0 +1,15 @@
+.log-in-btn{
+    background-color:  #0d6efd;
+    color: #FFFF;
+    padding: 15px;
+    font-weight: 600;
+}
+section{
+    position: relative;
+}
+.form-container{
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(50%);
+}

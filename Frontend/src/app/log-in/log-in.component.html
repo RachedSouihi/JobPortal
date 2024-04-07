@@ -1,0 +1,55 @@
+
+
+<section class="row mx-auto " style="position: relative;">
+   
+    <div  *ngIf="screenWidth >= 830" class="col-6 text-center">
+        <img src="assets/pexels-ovan-57690.jpg" class="img-fluid" alt="" width="100%">
+    </div>
+    <div class="form-container" [ngClass]="{'col-6': screenWidth >=830, 'col': screenWidth < 830}">
+        <h2 class="text-center">Hey, Welcome Back!</h2>
+        <h4 class="text-center">Log In and let your journey start here</h4>
+
+
+        <div class="mt-5">
+            <form class="row" [formGroup]="loginForm" (ngSubmit)="!loginForm.invalid && logIn()">
+
+                <div class="form-floating mb-3 col-9 mx-auto px-0">
+                    <input type="email" class="form-control"
+                        [ngClass]="{'is-invalid': loginForm.get('email')?.touched && loginForm.get('email')?.invalid}"
+                        id="email" placeholder="Email" formControlName="email">
+                    <label for="email">Email</label>
+                    <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+                        class="invalid-feedback mx-2">
+                        @if(loginForm.get('email')?.hasError('required')){
+                            Email required
+                        }@else {
+                            Invalid email
+                        }
+                    </div>
+                </div>
+                <div class="form-floating col-9 mx-auto px-0">
+                    <input type="password" class="form-control"
+                        [ngClass]="{'is-invalid': loginForm.get('password')?.touched && loginForm.get('password')?.invalid}"
+                        id="password" placeholder="Password" formControlName="password">
+                    <label for="password">Password</label>
+                    <div *ngIf="loginForm.get('password')?.errors && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+                        class="invalid-feedback mx-2">
+                        @if(loginForm.get('password')?.errors!["minlength"]){
+                            <span> Password must be at least 6 characters.</span>
+                        }
+                        @else{
+                            <span>Password is required.</span>
+                        }
+                    </div>
+
+                </div>
+
+
+                <div class="row mx-auto mt-5 px-0 text-center">
+                    <input type="submit" class="btn log-in-btn col-9 mx-auto" value="Log in">
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</section>
