@@ -1,0 +1,77 @@
+
+  <div class="container">
+   
+    <h2 class="my-4 text-center">Post a Job Offer</h2>
+    <form>
+      <div class="row">
+        <div class="form-floating col-md-6 p-0">
+          <input type="text" class="form-control" id="jobTitle" placeholder="Enter Job Title" required>
+          <label for="jobTitle">Job Title</label>
+
+        </div>
+        <div class="form-floating col-md-6 p-0">
+            <input type="text" class="form-control" id="postitionType" placeholder="Postion type">
+          <label for="positionType">Position Type</label>
+          
+        </div>
+      </div>
+      <div class="row form-floating p-0 my-3">
+        <input type="text" class="form-control" id="companyName" placeholder="Enter Company Name" required>
+        <label for="companyName">Company Name</label>
+
+      </div>
+      <div class="row form-floating my-3">
+        <input type="text" class="form-control" id="companyLocation" placeholder="Enter Company Location" required>
+        <label for="companyLocation">Company Location</label>
+
+      </div>
+      <div class="row my-3">
+        <div class="form-floating col-md-6 p-0">
+          <input type="text" class="form-control" id="workingSchedule" placeholder="Enter Working Schedule" required>
+          <label for="workingSchedule">Working Schedule</label>
+
+        </div>
+        <div class="form-floating col-md-6 p-0">
+          <input type="text" class="form-control" id="employmentType" placeholder="Enter Employment Type" required>
+          <label for="employmentType">Employment Type</label>
+
+        </div>
+      </div>
+      <div class="row d-flex align-items-center my-3">
+        <div class="form-floating col-md-3">
+          <button type="button" class="btn btn-secondary" id="addSkillButton">Add Skill</button>
+
+
+        </div>
+        <div class="form-floating col-md-9">
+          <select class="form-select" id="selectSkill" required>
+            
+
+          </select>
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="form-floating col-md-6 p-0">
+          <label for="workingSchedule">Experience</label>
+          <input type="text" class="form-control" id="workingSchedule" placeholder="Enter Experience" required>
+        </div>
+        <div class="form-floating col-md-6 p-0">
+          <label for="employmentType">Salary</label>
+          <input type="text" class="form-control" id="employmentType" placeholder="Enter Salary" required>
+        </div>
+      </div>
+      <div class="row form-group my-3">
+        <input type="date" class="form-control" id="deadline" required>
+      </div>
+      <div class="row form-floating my-3">
+        <textarea class="form-control" id="jobDescription" [rows]="1000" cols="3" placeholder="Enter Job Description"
+          required></textarea>
+          <label for="jobDescription">Job Description</label>
+
+      </div>
+
+
+      <button type="submit" class="btn btn-primary mt-4">Post Offer</button>
+    </form>
+
+  </div>
