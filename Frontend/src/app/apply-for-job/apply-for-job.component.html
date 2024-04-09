@@ -1,0 +1,126 @@
+<div class="container col my-5 col-md-8 p-5">
+    <h2 class="text-center text-dark">
+        @if(isForApplying){
+        Apply for {{job}} job
+        }@else {
+        Edit the candidacy of a {{job}}
+        }
+    </h2>
+    <form action="" [formGroup]="applyForm" class="p-xs-0 p-md-3" (ngSubmit)="applyForJob()">
+        <div class="row mx-auto">
+            <div class="col-md-5 firstname-col-parent">
+                <div class="form-floating mb-3 px-0">
+                    <input type="email" formControlName="firstname" class="form-control"
+                        [class.is-invalid]="isInvalid('firstname')" id="firstname" placeholder="firstname">
+                    <label for="firstname">Firstname</label>
+                    <div class="invalid-feedback mx-1">First name is required</div>
+
+                </div>
+            </div>
+            <div class="col-md-5 lastname-col-parent">
+                <div class="form-floating mb-3 px-0">
+                    <input type="email" formControlName="lastname" class="form-control"
+                        [class.is-invalid]="isInvalid('lastname')" id="lastname" placeholder="Lastname">
+                    <label for="lastname">lastname</label>
+                    <div class="invalid-feedback mx-1">
+                        Last name is required
+
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row mx-auto">
+            <div class="col-md-5 email-col-parent">
+                <div class="form-floating mb-3 px-0">
+                    <input type="email" formControlName="email" class="form-control"
+                        [class.is-invalid]="isInvalid('email')" id="email" placeholder="Email">
+                    <label for="email">Email</label>
+                    <div class="invalid-feedback mx-1">
+                        @if(applyForm.get('email')?.hasError('email')){
+                        Invalid email
+
+                        }@else{
+                        Email is required
+                        }</div>
+
+                </div>
+            </div>
+
+            <div class="col-md-5 phone-col-parent">
+
+                <div class="form-floating mb-3 px-0">
+                    <input type="phone" class="form-control" id="phone" placeholder="Phone" formControlName="phone">
+                    <label for="phone">Phone</label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row mx-auto">
+            <div class="col-md-2 add-skill-div mb-3">
+                <button type="button" class="add-skill btn" (click)="addSkill()">Add skill</button>
+            </div>
+            <div class="col-md-8 select-div mb-3">
+                <select name="" class="form-select" id="">
+                    @for(skill of skills; track skill){
+                    <option value={{skill}}>{{skill}} <svg xmlns="http://www.w3.org/2000/svg" style="z-index: 3;" width="30" height="16"
+                            fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg></option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="row mx-auto">
+            <div class="col-md-10 governorate-col-parent mx-auto">
+                <div class="form-floating mb-3 px-0">
+                    <input type="text" class="form-control" id="governorate" placeholder="Governorate"
+                        formControlName="governorate">
+                    <label for="governorate">governorate</label>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row mb-3 mx-auto">
+            <div class="col-md-10 mx-auto"><input type="file" formControlName="cv" [class.is-invalid]="isInvalid('cv')"
+                    (change)="getCV($event)" class="" name="" id=""></div>
+            <div class="invalid-feedback">
+                You have to make your cv
+
+
+            </div>
+        </div>
+        <div class="row mx-auto">
+            <div class="col-10 mx-auto">
+                <div class="d-grid">
+                    <button class="btn btn-primary apply mx-auto"
+                        (click)="isForApplying ? applyForJob() : editCandidacy()">
+                        @if(isForApplying){
+                        Apply
+                        }@else{
+                        Edit
+                        }
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+    <div *ngIf="openSkill" class="add-skill-window p-5">
+        <h3>Add skill</h3>
+        <div class="d-flex align-items-center">
+            <input type="text" class="form-control" value={{skill}} (input)="handleInputSkill($event)"
+                placeholder="Tap your skill here">
+            <button class="btn btn-primary mx-1 px-4" (click)="addSkillToSelect()">ADD</button>
+        </div>
+
+        <svg style="position: absolute; top: 2px; right: 2px" (click)="hideSkillWindow()" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+          </svg>
+    </div>
+</div>

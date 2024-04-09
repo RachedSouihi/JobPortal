@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            <h1>Applicants for [job title]post </h1>
+        </div>
+    </div>
+    <div class="m-1 p-0 row">
+        <div class="col-md-4 fw-bold">fullname</div>
+        <div class="col fw-bold">email</div>
+
+    </div>
+    @for(applicant of userData.applicants; track applicant){
+    <div class="m-2 p-3 border d-flex align-items-center">
+        <div class="col-md-4">
+            {{applicant.firstname + " " + applicant.lastname}}
+        </div>
+        <div class="col">{{applicant.email}}</div>
+
+        <div>
+
+            <button type="button" class="btn btn-primary" (click)="viewCV()">View applicant's information</button>
+        </div>
+    </div>
+}
+</div>

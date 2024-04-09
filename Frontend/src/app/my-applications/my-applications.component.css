@@ -1,0 +1,41 @@
+.application-parent{
+
+   background-color: aliceblue;
+   padding: 30px;
+   border-radius: .5rem;
+   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+   
+}
+
+.application{
+    display: flex;
+    align-items: center;
+}
+
+
+.update-delete-app-btn{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.delete-app-btn{
+}
+
+hr{
+    margin-top: 10px;
+    color: #000;
+}
+
+.pagination{
+    width: fit-content;
+    margin-inline: auto;
+}
+
+.sort-offer{
+    cursor: pointer;
+}
+
+.go-back-jo-page{
+    text-decoration: underline;
+    cursor: pointer;
+}

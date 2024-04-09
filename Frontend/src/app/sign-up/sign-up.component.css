@@ -1,0 +1,77 @@
+section{
+    background-color: #F7F7F7;
+    animation: animSection .5s ease-in-out;
+
+}
+
+
+section div:nth-child(1) img{
+    border-radius: 15px;
+}
+
+label{
+    color: grey;
+}
+
+
+input:focus{
+    box-shadow: none;
+
+    border: 2px solid #000;
+}
+
+
+
+@keyframes animSection {
+    from{opacity: 0;}to{opacity: 1;}
+    
+}
+
+
+.form-container{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 30px;
+    background:#F5F5F5;
+    border-radius: 15px;
+    border: 1px solid #ccc;
+}
+
+input{
+    background-color: transparent;
+}
+
+.div-hiring-manager, .div-seeker-job{
+    border: 1px solid #ccc;
+    position: relative;
+    height: 150px;cursor: pointer;
+    transition: .2s ease;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.div-hiring-manager.scale-div, .div-seeker-job.scale-div{
+    transform: scale(0.96)
+}
+
+
+
+.div-hiring-manager:hover, .div-seeker-job:hover{
+    border: 1px solid #000;
+}
+
+
+.sign-up-btn{
+    color: #FFFFFF;
+    font-weight: 600;
+    padding: 1rem 2rem;
+
+}
+
+
+.sign-up-btn:hover{
+    background-color: transparent;
+    border: 1px solid #0d6efd;
+    color: #000;
+}
+
+

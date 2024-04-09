@@ -1,11 +1,13 @@
-import { Component, OnInit, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { NavComponent } from '../nav/nav.component';
 import { CommonModule, Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 import gsap from 'gsap';
 import { JobFilterService } from '../job-filter.service';
 import { Router } from '@angular/router';
 import { SocketIOService } from '../socket-io.service';
 import { UserDataService } from '../user-data.service';
+
 //import { ScreenWidthService } from '../screen-width.service';
 
 @Component({
@@ -111,8 +113,8 @@ export class JobOfferComponent implements OnInit {
     }
   ]*/
 
- 
-  
+
+
 
 
   jobOfferToDisplayed!: any[];
@@ -124,148 +126,141 @@ export class JobOfferComponent implements OnInit {
   updateFilter(): void {
     this.jobOfferToDisplayed = this.jobOffer
 
-    for(let criteria in this.jobFilters){
-      if(typeof(this.jobFilters[criteria]) === "object" && this.jobFilters[criteria].length){
+    for (let criteria in this.jobFilters) {
+      if (typeof (this.jobFilters[criteria]) === "object" && this.jobFilters[criteria].length) {
         this.jobOfferToDisplayed = this.jobOfferToDisplayed.filter(job => this.jobFilters[criteria].includes(job[criteria].toLowerCase()))
 
-      }else{
+      } else {
         this.jobOfferToDisplayed = this.jobOfferToDisplayed.filter(job => job[criteria].toLowerCase().includes(this.jobFilters[criteria].toLowerCase()))
       }
     }
-    
-   
 
 
 
-    
+
+
+
   }
 
   jobFilters: any = {};
 
 
   JF = this.jobFilterService.jobFilters$.subscribe(jobFiltersArr => {
-    this.jobFilters = {...this.jobFilters, ...jobFiltersArr};
-    console.log(this.jobFilters)
+    this.jobFilters = { ...this.jobFilters, ...jobFiltersArr };
     this.updateFilter()
 
 
   })
 
 
- 
+
   @ViewChild('job_offer_section_parent') divv!: ElementRef;
 
 
-  constructor(private socketService: SocketIOService, private rendered: Renderer2 , userData: UserDataService,private jobFilterService: JobFilterService, private router: Router, private location: Location) { 
+  constructor(private socketService: SocketIOService, private rendered: Renderer2, private UserDataService: UserDataService, private jobFilterService: JobFilterService, private cdr: ChangeDetectorRef, private router: Router, private location: Location) {
 
-  
 
-    
+
+
     //Get user data from UserDataService 
-    userData.$userData.subscribe(user_data => {
+    this.UserDataService.$userData.subscribe(user_data => {
       this.userData = user_data;
-      console.log(user_data)
       this.socketService.emit('join', Number(this.userData.userId))
 
 
     })
-  /* const localUserData = localStorage.getItem("userData");
-    if (localUserData) {
-      
-      this.userData = JSON.parse(localUserData);
-     
-    }*/
-    
-    this.jobFilters = {...this.jobFilters, "employmentType": [], 'jobType': []}
+   
 
-    
-      fetch('http://127.0.0.1:3001/getAllOffer')
+    this.jobFilters = { ...this.jobFilters, "employmentType": [], 'jobType': [] }
+
+
+    fetch('http://127.0.0.1:3001/getAllOffer')
       .then(response => response.json())
-      .then(response => {console.log(response.offers);this.jobOffer = response.offers; this.jobOfferToDisplayed = response.offers})
+      .then(response => { console.log(response.offers); this.jobOffer = response.offers; this.jobOfferToDisplayed = response.offers })
       .catch(err => console.log(err.message))
 
-    
-    
 
 
-    
-    
 
-   
-    
 
-   
-  
+
+
+
+
+
+
+
+
   }
 
-  
-
-  
 
 
- 
-  
+
+
+
+
+
 
 
   ngOnInit(): void {
 
-    
-    
+
+
     /*else{
       this.router.navigate(['/'])
     }*/
 
-   // this.socketIOService.emit("joinSocketIOServer", 242619)
+    // this.socketIOService.emit("joinSocketIOServer", 242619)
 
     //this.fetchData()
 
 
-  
 
-  
+
+
 
   }
 
-  ngAfterViewInit(): void{
-   const navHeight =   document.querySelector('.app-nav')?.clientHeight;
-   
+  ngAfterViewInit(): void {
+    const navHeight = document.querySelector('.app-nav')?.clientHeight;
+
 
 
     this.rendered.setStyle(this.divv.nativeElement, 'height', `calc(100% - ${navHeight! + 2}px)`)
 
   }
-  
 
 
 
-  filter(criteria: string ,event: any): void{
+
+  filter(criteria: string, event: any): void {
     let newArr = [];
-    for(let i = 0; i < this.jobFilters[criteria].length; i++){
-      if(this.jobFilters[criteria][i] !== event.target.value) newArr.push(this.jobFilters[criteria][i])
+    for (let i = 0; i < this.jobFilters[criteria].length; i++) {
+      if (this.jobFilters[criteria][i] !== event.target.value) newArr.push(this.jobFilters[criteria][i])
     }
 
-    
-   
-    
-    this.jobFilters = {...this.jobFilters, [criteria]: event.target.checked ?  [...this.jobFilters[criteria],event.target.value]: newArr }
+
+
+
+    this.jobFilters = { ...this.jobFilters, [criteria]: event.target.checked ? [...this.jobFilters[criteria], event.target.value] : newArr }
     this.jobOfferToDisplayed = this.jobOffer;
-    for(let cr in this.jobFilters ){
-      if(typeof(this.jobFilters[cr]) === "object" && this.jobFilters[cr].length){
-        
+    for (let cr in this.jobFilters) {
+      if (typeof (this.jobFilters[cr]) === "object" && this.jobFilters[cr].length) {
+
         this.jobOfferToDisplayed = this.jobOfferToDisplayed.filter(job => this.jobFilters[cr].includes(job[cr].toLowerCase()))
 
       }
     }
 
-    
+
 
   }
 
- 
 
-  
 
-  
+
+
+
 
 
   setJobDetails(job: any): void {
@@ -292,18 +287,14 @@ export class JobOfferComponent implements OnInit {
   }
 
   applyForJob(): void {
-    const url = this.router.createUrlTree([`/apply/${this.jobDetails.hiring_mgr_id}/${this.jobDetails.offerId}/${this.jobDetails.jobTitle}`]).toString();
+    const url = this.router.createUrlTree([`apply/${this.jobDetails.hiring_mgr_id}/${this.jobDetails.offerId}/${this.jobDetails.jobTitle}/${this.jobDetails.companyName}`]).toString();
     window.open(this.location.prepareExternalUrl(url), '_blank');
   }
 
- on: any = this.socketService.on('someoneApply').subscribe(applicant => {
-    console.log("New candidacy: ", applicant)
-  })
-
 
   
 
-  
+
 
 
 

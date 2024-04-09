@@ -1,0 +1,103 @@
+<section class="row  mx-auto p-4">
+
+
+    <div class="col-6 p-relative">
+
+
+        <img src="assets/pexels-ovan-57690.jpg" class="img-fluid" alt="" width="100%">
+
+
+
+
+
+    </div>
+    <div class="col-6 mx-auto form-container">
+        <h2 class="text-center">Let's create your account</h2>
+
+
+        <form [formGroup]="signUpForm" (ngSubmit)="!signUpForm.invalid && create()">
+            <div class="row mx-auto p-4">
+                <div class="form-floating my-2 col-6 px-1">
+                    <input type="text" class="form-control" id="floatingInput" placeholder="firstname" formControlName="firstname">
+                    <label for="floatingInput">First name</label>
+                </div>
+                <div class="form-floating my-2 col-6 px-1">
+                    <input type="text" class="form-control" id="lastname" placeholder="lastname" formControlName="lastname">
+                    <label for="lastname">Last name</label>
+                </div>
+
+                <div class="form-floating my-2 col-12 px-1">
+                    <input type="email" class="form-control" placeholder="email" id="email" formControlName="email">
+                    <label for="email">email</label>
+                </div>
+
+                <div class="form-floating my-2 col-6 px-1">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="password" formControlName="password">
+                    <label for="floatingPassword">password</label>
+                </div>
+                <div class="form-floating my-2 col-6 px-1">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="password" formControlName="confPassword">
+                    <label for="floatingPassword">Confirm password</label>
+                </div>
+
+                <div class="form-floating my-2 col-12 px-1">
+                    <input type="text" class="form-control" placeholder="phone" formControlName="phone">
+                    <label for="floatingPassword">Phone</label>
+                </div>
+
+
+                <div (click)="setRadioCheck('hiring-manager')"
+                    [style]="hiringManagerRadio ? 'border: 1px solid #000' : '' " class="col-6 div-hiring-manager">
+                    <label for="hiring-manager"
+                        [style]="hiringManagerRadio ? 'color: #000; font-weight: 500' : ''">Hiring manager</label>
+
+                    <div class="form-check" style="position: absolute; bottom: 0; right: 0;">
+                        <input class="form-check-input" type="radio" 
+                            [checked]="hiringManagerRadio"
+                            [style]="!hiringManagerRadio ? 'border: 1px solid #000' : 'border: none'" value="job-seeker"
+                            name="hiring_manager" id="hiring-manager" formControlName="hiring_manager">
+
+                    </div>
+
+                </div>
+                <div class="col-6 div-seeker-job" [style]="seekerForJobRadio ? 'border: 1px solid #000' : '' "
+                    (click)="setRadioCheck('seeker-job')">
+                    <label for="seeker-for-job"
+                        [style]="seekerForJobRadio ? 'color: #000; font-weight: 500' : ''">Seeker for job</label>
+
+                    <div class="form-check" style="position: absolute; bottom: 0; right: 0;">
+                        <input class="form-check-input" type="radio" [checked]="seekerForJobRadio"
+                             id="seeker-for-job"
+                            [style]="!seekerForJobRadio ? 'border: 1px solid #000' : 'border: none'" name="hiring_manager" formControlName="hiring_manager">
+
+                    </div>
+
+                </div>
+
+                <div class="col mt-5 p-0">
+
+                    <button  class="btn btn-primary sign-up-btn" style="width: 100%;" >Sign up</button>
+
+
+
+                </div>
+
+
+
+
+
+            </div>
+
+        </form>
+
+
+
+    </div>
+
+    
+
+
+
+</section>
+
+

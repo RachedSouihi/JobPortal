@@ -28,9 +28,8 @@ export class LogInComponent {
 
   loggedInSuccessfully(data: any): void{
     setTimeout(() => {
-
+      this.LoginService.login(data)
     }, 4000)
-    this.LoginService.login(data)
 
   }
  
@@ -50,7 +49,6 @@ export class LogInComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    console.log(event.target.innerWidth)
     this.screenWidth = event.target.innerWidth
   }
 

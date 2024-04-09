@@ -1,0 +1,66 @@
+.container{
+    border: 1px solid #000;
+    border-radius: 1rem;
+    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    
+}
+form{
+    position: relative;
+    
+}
+
+form .row{
+position: relative;
+}
+
+
+input:focus{
+    box-shadow: none;
+}
+
+.firstname-col-parent ,.email-col-parent, .add-skill-div{
+    margin-left: auto;
+
+}
+
+.lastname-col-parent, .phone-col-parent, .select-div{
+    margin-right: auto;
+}
+
+.add-skill{
+    background-color: #000;
+    color: #ffff;
+    width: 100%;
+    
+}
+
+
+.add-skill:hover{
+    border: 1px solid #000;
+}
+
+.apply{
+    width: 100%;
+}
+
+.add-skill-window{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid #000;
+    background-color: #000;
+    border-radius: 10px;
+    color: #FFFF;
+    z-index: 2;
+    box-shadow: 0px 0px 10px 100vh rgba(0, 0, 0, .5);
+}
+
+svg{
+    color: #fff;
+}
