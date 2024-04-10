@@ -37,7 +37,7 @@ const io = socketIO(server, {
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: '242619',
   database: 'JobPortal',
   waitForConnections: true,
   queueLimit: 0
@@ -378,7 +378,19 @@ app.get('/getAllOffer', (req, res) => {
 
 })
 .delete('/deleteOffer', (req, res) => {
-  res.json({success: true})
+  const offerId = req.body.offerId
+
+  pool.query(`DELETE FROM OFFER WHERE offerId=${offerId}`, (err, result) => {
+    if(err){
+      console.log(err.message)
+      res.json({success: false})
+    }else{
+      res.json({success: true})
+
+
+    }
+  })
+  
 
 })
 
