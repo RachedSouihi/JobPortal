@@ -1,8 +1,10 @@
 const express = require("express")
 const cors = require('cors')
-const mysql = require("mysql2");
 const http = require('http')
-const multer = require('multer')
+const mysql = require("mysql2");
+const multer = require('multer');
+const { socketIOServer } = require("./socketIOServer");
+
 //const bodyParser = require('body-parser')
 
 
@@ -12,7 +14,10 @@ const upload = multer({ storage });
 
 
 
-const socketIO = require('socket.io');
+//const socketIO = require('socket.io');
+
+
+//const socketToUserIdMap = new Map();
 
 
 
@@ -21,17 +26,12 @@ app.use(cors())
 app.use(express.json());
 /*app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));*/
+
+
 const server = http.createServer(app)
-const io = socketIO(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  },
-});
 
 
+socketIOServer(server)
 
 
 const pool = mysql.createPool({
@@ -55,11 +55,14 @@ pool.getConnection((err, connection) => {
 });
 
 
-io.on('connection', (socket) => {
+/*io.on('connection', (socket) => {
+  console.log(socketToUserIdMap)
+
   console.log('A user connected');
 
   socket.on('join', userId => {
     socket.join(userId)
+    socketToUserIdMap.set(socket.id, userId)
     
     
     console.log("user with ID", userId, " join the socketIO server")
@@ -90,13 +93,30 @@ io.on('connection', (socket) => {
     
   })
 
- 
+  socket.on("user-disconnect", userId => {
+    socket.leave(userId)
+    socketToUserIdMap.delete(socket.id)
+    console.log(`User ${userId} disconnected`);
 
+
+  })
+
+ 
   socket.on('disconnect', () => {
+    const userId = socketToUserIdMap.get(socket.id)
+    if(userId !== undefined && userId !== null){
+      io.to(userId).emit('UserDisconnected', {})
+      //socketToUserIdMap.delete(socket.id)
+      
+      console.log(`User ${userId} disconnected`);
+
+
+    }
       console.log('User disconnected');
+      
   });
 });
-
+*/
 app.post('/sign-up', (req, res) => {
 
   const data = req.body.userData;
