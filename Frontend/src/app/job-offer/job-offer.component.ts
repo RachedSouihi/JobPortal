@@ -1,7 +1,6 @@
-import { Component, OnInit, ElementRef, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { NavComponent } from '../nav/nav.component';
 import { CommonModule, Location } from '@angular/common';
-import { Subscription } from 'rxjs';
 import gsap from 'gsap';
 import { JobFilterService } from '../job-filter.service';
 import { Router } from '@angular/router';
@@ -17,7 +16,7 @@ import { UserDataService } from '../user-data.service';
   templateUrl: './job-offer.component.html',
   styleUrl: './job-offer.component.css'
 })
-export class JobOfferComponent implements OnInit {
+export class JobOfferComponent implements OnInit, AfterViewInit {
 
   userData: any;
   jobOffer!: any[]/* [
@@ -179,18 +178,6 @@ export class JobOfferComponent implements OnInit {
       .then(response => { console.log(response.offers); this.jobOffer = response.offers; this.jobOfferToDisplayed = response.offers })
       .catch(err => console.log(err.message))
 
-
-
-
-
-
-
-
-
-
-
-
-
   }
 
 
@@ -203,17 +190,20 @@ export class JobOfferComponent implements OnInit {
 
 
   ngOnInit(): void {
+      this.socketService.on('newJobOffer').subscribe(newJobOffer => {
 
+        this.jobOffer.push(newJobOffer)
+        this.jobOfferToDisplayed = this.jobOffer
+        this.cdr.detectChanges()
 
+      })
 
-    /*else{
-      this.router.navigate(['/'])
-    }*/
+      this.socketService.on('offerDeleted').subscribe(offerId => {
+        this.jobOffer = this.jobOffer.filter(offer => offer.offerId != offerId)
 
-    // this.socketIOService.emit("joinSocketIOServer", 242619)
-
-    //this.fetchData()
-
+        this.jobOfferToDisplayed = this.jobOffer;
+        this.cdr.detectChanges();
+      })
 
 
 
@@ -221,12 +211,14 @@ export class JobOfferComponent implements OnInit {
 
   }
 
+  
+  @ViewChild(NavComponent, {static: true}) navComp!: NavComponent;
   ngAfterViewInit(): void {
-    const navHeight = document.querySelector('.app-nav')?.clientHeight;
+    
 
 
 
-    this.rendered.setStyle(this.divv.nativeElement, 'height', `calc(100% - ${navHeight! + 2}px)`)
+    this.rendered.setStyle(this.divv.nativeElement, 'height', `100%`)
 
   }
 
@@ -253,6 +245,9 @@ export class JobOfferComponent implements OnInit {
     }
 
 
+   
+
+
 
   }
 
@@ -264,15 +259,16 @@ export class JobOfferComponent implements OnInit {
 
 
   setJobDetails(job: any): void {
+   
     const translation = this.jobDetails ? false : true;
 
     this.jobDetails = job;
     translation &&
       gsap.fromTo(".show-job-details", {
-        x: 500
+        x: 300
       }, {
         //display: "block",
-        x: 0,
+        x: -100,
         duration: .5,
         ease: "power1.ease",
 
@@ -287,10 +283,35 @@ export class JobOfferComponent implements OnInit {
   }
 
   applyForJob(): void {
-    const url = this.router.createUrlTree([`apply/${this.jobDetails.hiring_mgr_id}/${this.jobDetails.offerId}/${this.jobDetails.jobTitle}/${this.jobDetails.companyName}`]).toString();
-    window.open(this.location.prepareExternalUrl(url), '_blank');
+    this.router.navigate([`job-portal/apply/${this.jobDetails.hiring_mgr_id}/${this.jobDetails.offerId}/${this.jobDetails.jobTitle}/${this.jobDetails.companyName}`]).toString();
   }
 
+
+  deleteJobOffer(offerId: number): void{
+      alert(offerId)
+
+  }
+
+
+  viewApplicants(offerId: number, jobTitle: String){
+    this.router.navigate([`/job-portal/applications/${offerId}/${jobTitle}`])
+    
+
+  }
+
+
+  isDisabled(): boolean{
+    
+    return this.userData.candidacy.find((job: any) => job.offerId == this.jobDetails.offerId) ? true : false
+  }
+
+
+
+  postJoboffer(): void{
+
+    this.router.navigate(['job-portal/post-job-offer'])
+      
+  }
 
   
 

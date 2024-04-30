@@ -28,4 +28,13 @@ export class UserDataService {
 
     
   }
+  getUserData(): any{
+    let userData;
+    this.$userData.subscribe(d =>  {
+      userData = d;
+
+    })
+    
+    return userData;
+  }
 }

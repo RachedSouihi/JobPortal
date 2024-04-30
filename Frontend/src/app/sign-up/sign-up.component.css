@@ -31,13 +31,14 @@ input:focus{
 .form-container{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: 30px;
-    background:#F5F5F5;
+    background:#FFFF;
     border-radius: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid #000;
 }
 
 input{
     background-color: transparent;
+    border: .2px solid #ccc;
 }
 
 .div-hiring-manager, .div-seeker-job{
@@ -48,15 +49,19 @@ input{
     border-radius: 10px;
     padding: 15px;
 }
+.div-seeker-job{
+}
 
 .div-hiring-manager.scale-div, .div-seeker-job.scale-div{
-    transform: scale(0.96)
+    transform: scale(0.96);
 }
 
 
 
 .div-hiring-manager:hover, .div-seeker-job:hover{
     border: 1px solid #000;
+    background-color: #FFF7FC;
+    color: red;
 }
 
 
@@ -72,6 +77,10 @@ input{
     background-color: transparent;
     border: 1px solid #0d6efd;
     color: #000;
+}
+
+.invalid-feedback{
+    margin-inline: 5px;
 }
 
 

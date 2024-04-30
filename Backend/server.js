@@ -14,10 +14,7 @@ const upload = multer({ storage });
 
 
 
-//const socketIO = require('socket.io');
 
-
-//const socketToUserIdMap = new Map();
 
 
 
@@ -55,72 +52,11 @@ pool.getConnection((err, connection) => {
 });
 
 
-/*io.on('connection', (socket) => {
-  console.log(socketToUserIdMap)
-
-  console.log('A user connected');
-
-  socket.on('join', userId => {
-    socket.join(userId)
-    socketToUserIdMap.set(socket.id, userId)
-    
-    
-    console.log("user with ID", userId, " join the socketIO server")
-  })
-
-
-  socket.on('offerDeleted', offerId => {
-    console.log('offerId: ', offerId)
-    io.emit('offerDeleted', offerId)
-  })
-  socket.on('IApplied', (seekerJobData, hiringMgrId) =>{
-    io.to(seekerJobData.userId).emit("IApplied", seekerJobData)
-    io.to(hiringMgrId).emit('someoneApply', seekerJobData)
-
-  })
-
-  socket.on('candidacyEdited', candidacy => {
-    console.log("CA:", candidacy.hiring_mgr_id)
-    
-    io.to(Number(candidacy.hiring_mgr_id)).emit('candidacyEdited', candidacy)
-  })
-
-  socket.on('candidacyDeleted', candidacyPK => {
-    io.to(candidacyPK.userId).emit("candidacyDeletedSeekerJob", candidacyPK.offerId)
-
-    io.to(candidacyPK.hiring_mgr_id).emit("candidacyDeletedHiringManager", candidacyPK)
-
-    
-  })
-
-  socket.on("user-disconnect", userId => {
-    socket.leave(userId)
-    socketToUserIdMap.delete(socket.id)
-    console.log(`User ${userId} disconnected`);
-
-
-  })
-
- 
-  socket.on('disconnect', () => {
-    const userId = socketToUserIdMap.get(socket.id)
-    if(userId !== undefined && userId !== null){
-      io.to(userId).emit('UserDisconnected', {})
-      //socketToUserIdMap.delete(socket.id)
-      
-      console.log(`User ${userId} disconnected`);
-
-
-    }
-      console.log('User disconnected');
-      
-  });
-});
-*/
 app.post('/sign-up', (req, res) => {
 
   const data = req.body.userData;
   const user = {"email": data.email, "password": data.password}
+
   let profile = {"firstname": data.firstname, "lastname": data.email, "phone": data.phone, "hiring_manager": data.hiring_manager}
   console.log(data);
   pool.query(`SELECT count(*) as 'accountExist' FROM user WHERE email='${data.email}'`, (err, result) => {
@@ -160,6 +96,7 @@ app.post('/sign-up', (req, res) => {
 
 app.post('/login', (req, res) => {
   const data = req.body;
+  console.log(data.email)
   pool.query(`SELECT * FROM user u, profile p WHERE u.userId=p.userId AND email='${data.email}'`, (err, result) => {
     if(err){
       res.json({err: err.message})
@@ -180,7 +117,7 @@ app.post('/login', (req, res) => {
 .get('/getSubmittedOffer', (req, res) => {
   userId = Number(req.query.userId);
   console.log(userId)
-  pool.query(`SELECT s.*, jobTitle, companyName, hiring_mgr_id, s.timestamp as timestamp FROM SEEKERJOB_OFFER s, offer o WHERE s.offerId=o.offerId and userId=${userId}`, (err, result) => {
+  pool.query(`SELECT s.*, jobTitle, companyName, hiring_mgr_id, c.candidacyStatus, s.timestamp as timestamp FROM SEEKERJOB_OFFER s inner join offer o ON s.offerId=o.offerId and s.userId=${userId} LEFT JOIN candidacy_status c ON s.offerId=c.offerId AND c.seekerJob_id=${userId}`, (err, result) => {
     if(err){
       res.json({"error": err.message})
     }else{
@@ -208,7 +145,7 @@ app.post("/postOffer", (req, res) => {
         })
       })
 
-      res.json(result)
+      res.json({success: true, offerId: offerId})
 
     }
   })
@@ -216,6 +153,7 @@ app.post("/postOffer", (req, res) => {
 
 app.post('/apply-for-job', upload.single('cv'), (req, res) => {
   const data = JSON.parse(req.body.data); // Parse the JSON data
+  console.log("apply for job")
   
 
   const cv = req.file.buffer
@@ -251,6 +189,7 @@ app.post('/apply-for-job', upload.single('cv'), (req, res) => {
 })
 .patch("/editCandidacy", upload.single('cv'), (req, res) => {
   const data = JSON.parse(req.body.data);
+  console.log("Edit candidacy")
   const cv = req.file.buffer;
  
   const query = `UPDATE seekerjob_offer SET firstname='${data.firstname}', lastname='${data.lastname}', email='${data.email}', governorate='${data.governorate}' WHERE userId=${data.userId} AND offerId=${data.offerId}`
@@ -319,11 +258,12 @@ app.post('/apply-for-job', upload.single('cv'), (req, res) => {
 
 .get('/getAllApplicants', (req, res) => {
   const hiringManagerId = req.query.hiringManagerId;
-  pool.query(`SELECT s.* FROM seekerjob_offer s, offer o WHERE s.offerId=o.offerId AND o.hiring_mgr_id=${hiringManagerId}`, async(err, resultQuery) => {
+  pool.query(`SELECT s.* FROM seekerjob_offer s INNER JOIN offer o ON s.offerId=o.offerId AND o.hiring_mgr_id=${hiringManagerId}`, async(err, resultQuery) => {
     if(err){
       console.log(err.message)
       res.json({succes: false})
     }else{
+      let applicants = resultQuery;
       for(let applicant of resultQuery){
         const skills = await new Promise((resolve, reject) => {
           pool.query(`SELECT skill from user_skills where userId=${applicant.userId} AND offerId=${applicant.offerId}`, (errSkillsQuery, resultSkillsQuery) => {
@@ -332,6 +272,7 @@ app.post('/apply-for-job', upload.single('cv'), (req, res) => {
               reject(errSkillsQuery)
 
             }else{
+              console.log(resultSkillsQuery)
               resolve(resultSkillsQuery)
 
             }
@@ -340,7 +281,7 @@ app.post('/apply-for-job', upload.single('cv'), (req, res) => {
           
         }
         )
-        console.log(skills)
+        applicant.skills = skills.map(skill => skill.skill);
 
       }
 
@@ -355,6 +296,44 @@ app.post('/apply-for-job', upload.single('cv'), (req, res) => {
 
 
 
+})
+
+.get("/getAllPostedJobOffers", (req, res) => {
+  const hiringManagerId = req.query.hiringManagerId;
+
+  pool.query(`SELECT * FROM OFFER WHERE hiring_mgr_id=${hiringManagerId}`, (err, result) => {
+    if(err){
+      console.log(err.message)
+      res.json({success: false})
+    }else{
+      console.log("pjo", result)
+      res.json({jobOffers: result})
+    }
+  })
+})
+
+.get("/getJobOffer", (req, res) => {
+  const offerId = req.query.offerId
+  console.log("offerId is: " + offerId)
+  pool.query(`SELECT * FROM OFFER WHERE offerId=${offerId}`, (err, result) => {
+    if(err){
+      console.log(err.message)
+      res.json({error: err})
+    }else{
+      pool.query(`SELECT skill FROM offer_skill WHERE offerId=${offerId}`, (err, resultQuery) => {
+        if(err){
+          console.log(err.message)
+          res.json({error: err})
+        }else{
+          const skills = resultQuery.map(skill => skill.skill)
+          res.json({"jobOffer": {...result[0], skills: skills}})
+
+          
+        }
+
+      })
+    }
+  })
 })
 
 
@@ -397,6 +376,38 @@ app.get('/getAllOffer', (req, res) => {
 
 
 })
+
+.put("/editJobOffer", (req, res) => {
+  const {offerId, ...data} = req.body;
+
+  let query = "UPDATE OFFER SET "
+  const updatedValues = []
+
+  Object.keys(data).forEach((key) => {
+    
+    query+=` ${key} = ?,`
+    updatedValues.push(data[key])
+  })
+
+
+
+  query = query.slice(0, -1)
+
+  query+=` WHERE offerId=${offerId}`
+  console.log(query)
+
+
+  pool.query(query, updatedValues, (err, result) => {
+    if(err){
+      console.log(err.message)
+      res.json({succes: false})
+    }else{
+      res.json({success: true})
+    }
+  })
+
+})
+
 .delete('/deleteOffer', (req, res) => {
   const offerId = req.body.offerId
 

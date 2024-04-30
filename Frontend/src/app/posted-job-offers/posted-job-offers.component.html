@@ -1,6 +1,39 @@
 <div class="container mt-5">
-    <h2 class="mx-2">My posted job offers</h2>
-    <div class="application-parent mt-3">
+    <h2 class="my-posted-job-offer-title mx-2">My posted job offers</h2>
+    @if(postedJobOffers.length){
+    <div class="row filter-year-month">
+        <div class="col-2">
+            <select name="" class="form-select" (change)="handleFilterOffers('month', $event)" id="">
+                <option value="all month">All month</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+        </div>
+        <div class="col-2">
+            <select name="" class="form-select" (change)="handleFilterOffers('year', $event)" id="">
+                <option value="">2024</option>
+                <option value="">2023</option>
+                <option value="">2022</option>
+            </select>
+
+
+        </div>
+
+
+    </div>
+}
+    @if(postedJobOffersToDisplay.length){
+    <div class="posted-job-offer-container mt-3 p-4">
         <div class="row d-flex mb-4">
             <div class="col-3 fw-bold">Job</div>
             <div class="col-4 fw-bold">Company</div>
@@ -16,23 +49,43 @@
 
         </div>
 
-        @for(job of postedJobOffers; track job){
+        @for(job of postedJobOffersToDisplay; track job){
         <div class="row application">
             <div class="col-3">{{job.jobTitle}}</div>
             <div class="col-4">{{job.companyName}}</div>
-            <div class="col">{{job.timestamp}}</div>
+            <div class="col-2">{{job.timestamp}}</div>
             <div class="col update-delete-app-btn">
-                <button class="btn btn-primary">Edit</button>
-                <button class="btn btn-danger delete-app-btn" (click)="deleteOffer(job.offerId)">Delete</button>
+                <button class="btn btn-primary edit-btn mx-1" (click)="editOffer(job.offerId)">Edit</button>
+                <button class="btn btn-danger delete-btn mx-1" (click)="deleteOffer(job.offerId)">Delete</button>
             </div>
         </div>
         <hr>
         }
-        
+
+
+
 
 
 
     </div>
+    } @else if(postedJobOffers.length) {
+    <div class="row">
+        <div class="col-auto mx-auto">
+            <h3 class="mx-auto mt-5">There's no Job Offer posted in that date</h3>
+        </div>
+
+    </div>
+
+    }@else{
+        <div class="row mt-4">
+            <div class="col">
+                <h3>You've posted no job offer yet!</h3>
+
+            </div>
+        </div>
+
+    }
+
 
 
 

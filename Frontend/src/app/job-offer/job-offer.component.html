@@ -1,4 +1,4 @@
-<section style="height: 100%; display: flex; flex-direction: column; overflow-x: hidden;">
+<section style="height: 100%; display: flex; flex-direction: column;">
     
 
 
@@ -137,18 +137,28 @@
 
                 @if(!userData.hiring_manager){
                 <div class="row mx-auto mt-3">
-                    <button class="btn btn-primary" (click)="applyForJob()">Apply</button>
+                    <button class="btn btn-primary" (click)="applyForJob()" [disabled]="isDisabled()">Apply</button>
                 </div>
 
+
+                }@else if(userData.userId == jobDetails.hiring_mgr_id){
+                    <div class="row">
+                        <div class="col-6"><button class="btn btn-primary view-applicants-btn" (click)="viewApplicants(jobDetails.offerId, jobDetails.jobTitle)">View applicants</button></div>
+                        <div class="col"><button class="btn">Edit</button></div>
+                        <div class="col"><button class="btn btn-danger Delete-btn" (click)="deleteJobOffer(jobDetails.offerId)">Delete</button></div>
+                    </div>
+
                 }
                 }
-
-
-
-
-
             </div>
         </div>
+    </div>
+
+
+
+    <div *ngIf="userData.hiring_manager" (click)="postJoboffer()">
+
+        <img src="assets/add.png" class="add-job-btn" alt="" width="80px">
     </div>
 
 

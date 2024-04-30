@@ -43,6 +43,12 @@ export class SocketIOService {
 
 
 
+  emitLogOutEvent(userId: number): void{
+    socket.emit('logout', userId)
+  }
+
+
+
 
 }
 

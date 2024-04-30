@@ -78,6 +78,12 @@ export class HomeComponent implements OnInit {
   }
 
 
+  login(): void{
+    this.router.navigate(['/login'])
+
+  }
+
+
   signUp(): void {
     const btn = document.querySelector('.signup-btn');
 

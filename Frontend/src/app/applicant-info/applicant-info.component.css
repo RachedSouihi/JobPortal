@@ -1,0 +1,18 @@
+.applicant-info-div-1{
+    border-right: 1px solid #000;
+    height: 100%;
+}
+.applicant-info-div-1 div div:nth-child(1){
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.applicant-info-div-1 div div:nth-child(2){
+    font-size: 23px;
+}
+
+
+.skill{
+    border: 1px solid #000;
+    border-radius: 10px;
+}

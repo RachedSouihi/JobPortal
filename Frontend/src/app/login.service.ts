@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserDataService } from './user-data.service';
+import { SocketIOService } from './socket-io.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private router: Router, private UserDataService: UserDataService) { }
+  constructor(private router: Router, private UserDataService: UserDataService, private SocketService: SocketIOService) { }
 
 
   login(userData: any): void{
@@ -19,7 +20,6 @@ export class LoginService {
 
 
   logout(userData: any): void{
-    localStorage.setItem('userData', JSON.stringify({...userData, isLoggedIn: false }));
     this.router.navigate(['/login'])
 
   }

@@ -1,25 +1,67 @@
 <div class="container">
-    <div class="row">
+    @if(0){
+    <div class="row mt-5">
         <div class="col text-center">
-            <h1>Applicants for [job title]post </h1>
+            <h1>Applicants for {{jobTitle}} job offer </h1>
         </div>
     </div>
-    <div class="m-1 p-0 row">
-        <div class="col-md-4 fw-bold">fullname</div>
-        <div class="col fw-bold">email</div>
+    }
 
-    </div>
-    @for(applicant of userData.applicants; track applicant){
-    <div class="m-2 p-3 border d-flex align-items-center">
-        <div class="col-md-4">
-            {{applicant.firstname + " " + applicant.lastname}}
+    @else {
+        <div class="row mt-5">
+            <div class="col">
+                <h1 class="fw-bold">Applications</h1>
+            </div>
         </div>
-        <div class="col">{{applicant.email}}</div>
+    }
+    @if(userData.postedJobOffers.length){
+    <div class="row mt-4 div-row-select-offer">
+        <div class="col-2">
+            <select name="" class="form-select" id="" (change)="handleChange($event)">
+                @for(jobOffer of userData.postedJobOffers; track jobOffer){
+                <option value={{jobOffer.offerId}}>{{jobOffer.jobTitle}}</option>
 
-        <div>
+                }
 
-            <button type="button" class="btn btn-primary" (click)="viewCV()">View applicant's information</button>
+            </select>
         </div>
     </div>
 }
+    
+    @if(applicationsToDisplayed.length){
+    <div class="row applicants-info-container mt-3">
+        <div class="m-1 p-0 row">
+            <div class="col-md-3 fw-bold">fullname</div>
+            <div class="col fw-bold">email</div>
+            <div class="col-2 fw-bold">date</div>
+            <div class="col-3"></div>
+        </div>
+        @for(applicant of applicationsToDisplayed; track applicant){
+        <div class="m-2 p-3 d-flex align-items-center">
+            <div class="col-3">
+                {{applicant.firstname + " " + applicant.lastname}}
+            </div>
+            <div class="col">{{applicant.email}}</div>
+            <div class="col-2">{{applicant.timestamp}}</div>
+
+            <div class="col-3 view-applicant-btn-div">
+
+                <button type="button" class="btn btn-primary view-applicant-btn" (click)="viewApplicantInfo(applicant.userId)">View applicant's
+                    information</button>
+            </div>
+        </div>
+        <hr>
+        }
+    </div>
+    }@else if(userData.postedJobOffers.length) {
+    <h3>There's no applicant for <span class="text-info fw-bold">{{jobTitle}}</span> job offer yet!</h3>
+    }@else {
+        <div class="row mt-4">
+            <div class="col">
+                <h3 >You've posted no job offer yet!</h3>
+
+            </div>
+        </div>
+    }
+
 </div>

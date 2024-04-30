@@ -20,7 +20,7 @@ function socketIOServer(server){
 
     
   io.on('connection', (socket) => {
-    console.log(socketToUserIdMap)
+    //console.log(socketToUserIdMap)
   
     console.log('A user connected');
   
@@ -29,12 +29,16 @@ function socketIOServer(server){
       socketToUserIdMap.set(socket.id, userId)
       
       
-      console.log("user with ID", userId, " join the socketIO server")
+     // console.log("user with ID", userId, " join the socketIO server")
+    })
+
+    socket.on('newJobOffer', jobOffer => {      
+      io.emit("newJobOffer", jobOffer);
     })
   
   
     socket.on('offerDeleted', offerId => {
-      console.log('offerId: ', offerId)
+     // console.log('offerId: ', offerId)
       io.emit('offerDeleted', offerId)
     })
     socket.on('IApplied', (seekerJobData, hiringMgrId) =>{
@@ -44,7 +48,7 @@ function socketIOServer(server){
     })
   
     socket.on('candidacyEdited', candidacy => {
-      console.log("CA:", candidacy.hiring_mgr_id)
+      //console.log("CA:", candidacy.hiring_mgr_id)
       
       io.to(Number(candidacy.hiring_mgr_id)).emit('candidacyEdited', candidacy)
     })
@@ -57,10 +61,14 @@ function socketIOServer(server){
       
     })
   
-    socket.on("user-disconnect", userId => {
+    socket.on("logout", userId => {
+      console.log("Someone log out: " + userId)
+
+      io.to(userId).emit("user-logged-out", userId)
+
       socket.leave(userId)
       socketToUserIdMap.delete(socket.id)
-      console.log(`User ${userId} disconnected`);
+      //console.log(`User ${userId} disconnected`);
   
   
     })
@@ -70,7 +78,9 @@ function socketIOServer(server){
       const userId = socketToUserIdMap.get(socket.id)
       if(userId !== undefined && userId !== null){
         io.to(userId).emit('UserDisconnected', {})
-        //socketToUserIdMap.delete(socket.id)
+        
+        socketToUserIdMap.delete(socket.id)
+        socket.leave(socket.id)
         
         console.log(`User ${userId} disconnected`);
   

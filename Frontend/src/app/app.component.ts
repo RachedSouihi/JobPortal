@@ -9,6 +9,8 @@ import { NavComponent } from './nav/nav.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
+
+
 export class AppComponent {
   title = 'JobPortalFrontend';
 }

@@ -146,13 +146,15 @@ export class MyApplicationsComponent {
 
     })
 
-    if (!(this.userData.candidacy)) {
-      fetch(`http://127.0.0.1:3001/getSubmittedOffer?userId=${this.userData.userId}`)
-        .then(response => response.json())
-        .then(response => this.updateUserData(response.data))
-        .catch(err => console.log(err.message))
 
-    }
+    fetch(`http://127.0.0.1:3001/getSubmittedOffer?userId=${this.userData.userId}`)
+      .then(response => response.json())
+      .then(response => this.updateUserData(response.data))
+      .catch(err => console.log(err.message))
+
+    
+
+
 
 
 
@@ -162,9 +164,7 @@ export class MyApplicationsComponent {
 
 
   editCandidacy(submitted_candidacy: any): void {
-    const url = this.router.createUrlTree([`job-portal/edit/${submitted_candidacy.userId}/${submitted_candidacy.offerId}/${submitted_candidacy.jobTitle}`]).toString()
-    console.log(url)
-    window.open(this.location.prepareExternalUrl(url), '_blank')
+    const url = this.router.navigate([`job-portal/edit/${submitted_candidacy.userId}/${submitted_candidacy.offerId}/${submitted_candidacy.jobTitle}`]).toString()
 
 
   }
@@ -211,10 +211,10 @@ export class MyApplicationsComponent {
   })
 
   UserApplied: any = this.SocketService.on('IApplied').subscribe(candidacy => {
-    if(!this.userData.candidacy.find((c: any) => c.userId == candidacy.userId && c.offerId == candidacy.offerId)){
-    this.userData.candidacy.push(candidacy)
-    this.UserDataService.updateUserData(this.userData)
-    this.cdr.detectChanges();
+    if (!this.userData.candidacy.find((c: any) => c.userId == candidacy.userId && c.offerId == candidacy.offerId)) {
+      this.userData.candidacy.push(candidacy)
+      this.UserDataService.updateUserData(this.userData)
+      this.cdr.detectChanges();
     }
 
   })
@@ -223,15 +223,15 @@ export class MyApplicationsComponent {
   OD: any = this.SocketService.on("offerDeleted").subscribe(offerId => {
 
 
-      this.userData = { ...this.userData, candidacy: this.userData.candidacy.filter((c: any) => c.offerId != offerId) }
-      this.UserDataService.updateUserData(this.userData)
-      this.cdr.detectChanges();
-    
+    this.userData = { ...this.userData, candidacy: this.userData.candidacy.filter((c: any) => c.offerId != offerId) }
+    this.UserDataService.updateUserData(this.userData)
+    this.cdr.detectChanges();
+
   })
 
 
 
-  goBackJobOfferPage(): void{
+  goBackJobOfferPage(): void {
     this.router.navigate(['/job-offer'])
   }
 

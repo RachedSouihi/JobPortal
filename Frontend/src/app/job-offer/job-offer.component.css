@@ -3,7 +3,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 section{
+    position: relative;
     animation: anim-section 1s ease;
+    overflow: hidden;
 }
 
 @keyframes anim-section {
@@ -73,7 +75,7 @@ section{
 
     position: absolute;
     top: 0;
-    right: 0;
+    right: -100px;
     height: 100%;
     max-width: 500px;
     color: #ffff;
@@ -90,5 +92,14 @@ section{
   font-style: normal;
   
 }
+
+.add-job-btn {
+    position: absolute;
+    bottom: 0;
+    right: 100px;
+    cursor: pointer;
+
+}
+
 
 

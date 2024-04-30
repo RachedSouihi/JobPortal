@@ -15,68 +15,109 @@
         <h2 class="text-center">Let's create your account</h2>
 
 
-        <form [formGroup]="signUpForm" (ngSubmit)="!signUpForm.invalid && create()">
+        <form [formGroup]="signUpForm" (ngSubmit)="create()">
             <div class="row mx-auto p-4">
-                <div class="form-floating my-2 col-6 px-1">
-                    <input type="text" class="form-control" id="floatingInput" placeholder="firstname" formControlName="firstname">
-                    <label for="floatingInput">First name</label>
-                </div>
-                <div class="form-floating my-2 col-6 px-1">
-                    <input type="text" class="form-control" id="lastname" placeholder="lastname" formControlName="lastname">
-                    <label for="lastname">Last name</label>
-                </div>
-
-                <div class="form-floating my-2 col-12 px-1">
-                    <input type="email" class="form-control" placeholder="email" id="email" formControlName="email">
-                    <label for="email">email</label>
-                </div>
-
-                <div class="form-floating my-2 col-6 px-1">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="password" formControlName="password">
-                    <label for="floatingPassword">password</label>
-                </div>
-                <div class="form-floating my-2 col-6 px-1">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="password" formControlName="confPassword">
-                    <label for="floatingPassword">Confirm password</label>
-                </div>
-
-                <div class="form-floating my-2 col-12 px-1">
-                    <input type="text" class="form-control" placeholder="phone" formControlName="phone">
-                    <label for="floatingPassword">Phone</label>
-                </div>
-
-
-                <div (click)="setRadioCheck('hiring-manager')"
-                    [style]="hiringManagerRadio ? 'border: 1px solid #000' : '' " class="col-6 div-hiring-manager">
-                    <label for="hiring-manager"
-                        [style]="hiringManagerRadio ? 'color: #000; font-weight: 500' : ''">Hiring manager</label>
-
-                    <div class="form-check" style="position: absolute; bottom: 0; right: 0;">
-                        <input class="form-check-input" type="radio" 
-                            [checked]="hiringManagerRadio"
-                            [style]="!hiringManagerRadio ? 'border: 1px solid #000' : 'border: none'" value="job-seeker"
-                            name="hiring_manager" id="hiring-manager" formControlName="hiring_manager">
+                <div class="row mx-auto">
+                    <div class="form-floating my-2 col px-1">
+                        <input type="text" class="form-control" [ngClass]="{'is-valid': signUpForm.get('firstname')?.touched && !signUpForm.get('firstname')?.invalid,
+                    'is-invalid': signUpForm.get('firstname')?.touched && signUpForm.get('firstname')?.invalid
+                }" id="floatingInput" placeholder="firstname" formControlName="firstname">
+                        <label for="floatingInput">First name</label>
+                        <div class="valid-feedback">@if(!signUpForm.get('firstname')?.invalid){}</div>
+                        <div class='invalid-feedback'>@if(signUpForm.get('firstname')?.invalid){Firstname is required}</div>
 
                     </div>
-
+                    <div class="form-floating my-2 col px-1">
+                        <input type="text" class="form-control" [ngClass]="{'is-valid': signUpForm.get('lastname')?.touched && !signUpForm.get('lastname')?.invalid,
+                        'is-invalid': signUpForm.get('lastname')?.touched && signUpForm.get('lastname')?.invalid
+                    }" id="lastname" placeholder="lastname"
+                            formControlName="lastname">
+                        <label for="lastname">Last name</label>
+                        <div class="valid-feedback">@if(!signUpForm.get('lastname')?.invalid){}</div>
+                        <div class='invalid-feedback'>@if(signUpForm.get('lastname')?.invalid){Lastname is required}</div>
+                    </div>
                 </div>
-                <div class="col-6 div-seeker-job" [style]="seekerForJobRadio ? 'border: 1px solid #000' : '' "
-                    (click)="setRadioCheck('seeker-job')">
-                    <label for="seeker-for-job"
-                        [style]="seekerForJobRadio ? 'color: #000; font-weight: 500' : ''">Seeker for job</label>
 
-                    <div class="form-check" style="position: absolute; bottom: 0; right: 0;">
-                        <input class="form-check-input" type="radio" [checked]="seekerForJobRadio"
-                             id="seeker-for-job"
-                            [style]="!seekerForJobRadio ? 'border: 1px solid #000' : 'border: none'" name="hiring_manager" formControlName="hiring_manager">
+                <div class="row mx-auto">
+                    <div class="form-floating my-2 col-12 px-1">
+                        <input type="email" class="form-control" [ngClass]="{'is-valid': signUpForm.get('email')?.touched && !signUpForm.get('email')?.invalid,
+                        'is-invalid': signUpForm.get('email')?.touched && signUpForm.get('email')?.invalid
+                    }"  placeholder="email" id="email" formControlName="email">
+                        <label for="email">email</label>
+                        <div class="valid-feedback">@if(!signUpForm.get('email')?.invalid){}</div>
+                        <div class='invalid-feedback'>
+                            @if(signUpForm.get('email')?.hasError('required')){Email is required}
+                            @else {Invalid email}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mx-auto">
+
+                    <div class="form-floating my-2 col px-1">
+                        <input type="password" class="form-control" [ngClass]="{'is-valid': signUpForm.get('password')?.touched && !signUpForm.get('password')?.invalid,
+                        'is-invalid': signUpForm.get('password')?.touched && signUpForm.get('password')?.invalid
+                    }"  id="floatingPassword" placeholder="password"
+                            formControlName="password">
+                        <label for="floatingPassword">password</label>
+                        <div class='invalid-feedback'>
+                            @if(signUpForm.get('password')?.hasError('required')){Password is required}
+                            @else if(signUpForm.get('password')?.hasError('mismatch')){Password doesn't match}
+                            
+                        </div>
+                    </div>
+                    <div class="form-floating my-2 col px-1">
+                        <input type="password" class="form-control" id="floatingPassword" placeholder="password"
+                            formControlName="confPassword">
+                        <label for="floatingPassword">Confirm password</label>
+                    </div>
+                </div>
+
+                <div class="row mx-auto">
+                    <div class="form-floating my-2 col px-1">
+                        <input type="text" class="form-control" placeholder="phone" formControlName="phone">
+                        <label for="floatingPassword">Phone</label>
+                    </div>
+                </div>
+
+
+                <div class="row mx-auto"
+                    style="display: flex; align-items: center; justify-content: space-between; ">
+                    <div (click)="setRadioCheck('hiring-manager')"
+                        [style]="hiringManagerRadio ? 'border: 1px solid #000' : '' "
+                        class="col mx-3 div-hiring-manager">
+                        <label for="hiring-manager"
+                            [style]="hiringManagerRadio ? 'color: #000; font-weight: 500' : ''">Hiring manager</label>
+
+                        <div class="form-check" style="position: absolute; bottom: 0; right: 0;">
+                            <input class="form-check-input" type="radio" [checked]="hiringManagerRadio"
+                                [style]="!hiringManagerRadio ? 'border: 1px solid #000' : 'border: none'"
+                                value="job-seeker" name="hiring_manager" id="hiring-manager"
+                                formControlName="hiring_manager">
+
+                        </div>
 
                     </div>
+                    <div class="col mx-3 div-seeker-job" [style]="seekerForJobRadio ? 'border: 1px solid #000' : '' "
+                        (click)="setRadioCheck('seeker-job')">
+                        <label for="seeker-for-job"
+                            [style]="seekerForJobRadio ? 'color: #000; font-weight: 500' : ''">Seeker for job</label>
 
+                        <div class="form-check" style="position: absolute; bottom: 0; right: 0;">
+                            <input class="form-check-input" type="radio" [checked]="seekerForJobRadio"
+                                id="seeker-for-job"
+                                [style]="!seekerForJobRadio ? 'border: 1px solid #000' : 'border: none'"
+                                name="hiring_manager" formControlName="hiring_manager">
+
+                        </div>
+
+                    </div>
                 </div>
+
 
                 <div class="col mt-5 p-0">
 
-                    <button  class="btn btn-primary sign-up-btn" style="width: 100%;" >Sign up</button>
+                    <button class="btn btn-primary sign-up-btn" style="width: 100%;">Sign up</button>
 
 
 
@@ -94,10 +135,8 @@
 
     </div>
 
-    
+
 
 
 
 </section>
-
-

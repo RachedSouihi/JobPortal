@@ -1,12 +1,12 @@
 <div class="container col my-5 col-md-8 p-5">
     <h2 class="text-center text-dark">
-        @if(isForApplying){
+        @if(isForApplying()){
         Apply for {{job}} job
         }@else {
         Edit the candidacy of a {{job}}
         }
     </h2>
-    <form action="" [formGroup]="applyForm" class="p-xs-0 p-md-3" (ngSubmit)="applyForJob()">
+    <form action="" [formGroup]="applyForm" class="p-xs-0 p-md-3" (ngSubmit)="isForApplying() ? applyForJob(): editCandidacy()">
         <div class="row mx-auto">
             <div class="col-md-5 firstname-col-parent">
                 <div class="form-floating mb-3 px-0">
@@ -97,9 +97,8 @@
         <div class="row mx-auto">
             <div class="col-10 mx-auto">
                 <div class="d-grid">
-                    <button class="btn btn-primary apply mx-auto"
-                        (click)="isForApplying ? applyForJob() : editCandidacy()">
-                        @if(isForApplying){
+                    <button class="btn btn-primary apply mx-auto">
+                        @if(isForApplying()){
                         Apply
                         }@else{
                         Edit

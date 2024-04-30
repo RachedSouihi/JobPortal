@@ -1,0 +1,72 @@
+<section class="container">
+    <div class="row">
+        <div class="col-6 applicant-info-div-1">
+            <div class="mt-5 d-flex align-items-center">
+                <div>Firstname: </div>
+                <div class="mx-3 text-primary fw-bold">{{applicantInfo.firstname}}</div>
+
+
+            </div>
+            <div class="d-flex align-items-center mt-4">
+                <div>Lastname: </div>
+                <div class="mx-3 text text-primary fw-bold">{{applicantInfo.lastname}}</div>
+
+            </div>
+            <div class="d-flex align-items-center mt-4">
+                <div>Email: </div>
+                <div class="mx-3 text-primary fw-bold">{{applicantInfo.email}}</div>
+
+
+            </div>
+            <div class="d-flex align-items-center mt-4">
+                <div>Governorate: </div>
+                <div class="mx-3 text-primary fw-bold">{{applicantInfo.governorate}}</div>
+
+
+            </div>
+            <div class="d-flex align-items-center mt-4">
+                <div>Phone: </div>
+                <div class="mx-3 text-primary fw-bold">{{applicantInfo.phone}}</div>
+
+
+            </div>
+            <div class="mt-4">
+
+                <div>Cover letter: </div>
+                <div>{{applicantInfo.coverLetter}}</div>
+
+            </div>
+
+        </div>
+
+
+
+
+        <div class="col">
+            <div>
+                <div class="fw-bold mt-5">Skills: </div>
+                <div class="d-flex flex-wrap">
+                    @for(skill of applicantInfo.skills; track skill){
+                    <div class="skill px-3 py-2 mx-1">{{skill}}</div>
+                    }
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="accept-reject-btn-container mt-3">
+                <button class="btn btn-success mx-1">Accept</button>
+                <button class="btn btn-danger mx-1">Reject</button>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>

@@ -1,0 +1,21 @@
+.view-applicant-btn-div{
+    display: flex;
+    justify-content: end;
+}
+
+/*.view-applicant-btn{
+}*/
+
+
+.div-row-select-offer div{
+    margin-left: auto;
+
+}
+
+.applicants-info-container{
+    background-color: aliceblue;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+
+}

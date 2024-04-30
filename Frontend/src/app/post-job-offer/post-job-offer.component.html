@@ -1,50 +1,59 @@
 
   <div class="container">
-   
+   @if(isForPosting()){
     <h2 class="my-4 text-center">Post a Job Offer</h2>
-    <form>
+   }@else {
+    <h2 class="my-4 text-center">Edit a Job Offer</h2>
+
+    
+   }
+    <form [formGroup]="myForm" (ngSubmit)="isForPosting() ? postJobOffer(): editJobOffer()">
       <div class="row">
         <div class="form-floating col-md-6 p-0">
-          <input type="text" class="form-control" id="jobTitle" placeholder="Enter Job Title" required>
+          <input type="text" class="form-control" id="jobTitle" placeholder="Enter Job Title" required formControlName="jobTitle">
           <label for="jobTitle">Job Title</label>
 
         </div>
         <div class="form-floating col-md-6 p-0">
-            <input type="text" class="form-control" id="postitionType" placeholder="Postion type">
+            <input type="text" class="form-control" id="postitionType" placeholder="Postion type" formControlName="jobType">
           <label for="positionType">Position Type</label>
           
         </div>
       </div>
       <div class="row form-floating p-0 my-3">
-        <input type="text" class="form-control" id="companyName" placeholder="Enter Company Name" required>
+        <input type="text" class="form-control" id="companyName" placeholder="Enter Company Name" required formControlName="companyName">
         <label for="companyName">Company Name</label>
 
       </div>
       <div class="row form-floating my-3">
-        <input type="text" class="form-control" id="companyLocation" placeholder="Enter Company Location" required>
+        <input type="text" class="form-control" id="companyLocation" placeholder="Enter Company Location" formControlName="companyLocation" required>
         <label for="companyLocation">Company Location</label>
 
       </div>
       <div class="row my-3">
         <div class="form-floating col-md-6 p-0">
-          <input type="text" class="form-control" id="workingSchedule" placeholder="Enter Working Schedule" required>
+          <input type="text" class="form-control" id="workingSchedule" placeholder="Enter Working Schedule" formControlName="workingSchedule" required>
           <label for="workingSchedule">Working Schedule</label>
 
         </div>
         <div class="form-floating col-md-6 p-0">
-          <input type="text" class="form-control" id="employmentType" placeholder="Enter Employment Type" required>
+          <input type="text" class="form-control" id="employmentType" placeholder="Enter Employment Type" formControlName="employmentType" required>
           <label for="employmentType">Employment Type</label>
 
         </div>
       </div>
       <div class="row d-flex align-items-center my-3">
         <div class="form-floating col-md-3">
-          <button type="button" class="btn btn-secondary" id="addSkillButton">Add Skill</button>
+          <button type="button" class="btn btn-secondary" id="addSkillButton" (click)="setAddSkills()">Add Skill</button>
 
 
         </div>
         <div class="form-floating col-md-9">
-          <select class="form-select" id="selectSkill" required>
+          <select class="form-select" id="selectSkill">
+            @for(skill of skills; track skill){
+              <option value={{skill}}>{{skill}}</option>
+
+            }
             
 
           </select>
@@ -53,15 +62,15 @@
       <div class="row my-3">
         <div class="form-floating col-md-6 p-0">
           <label for="workingSchedule">Experience</label>
-          <input type="text" class="form-control" id="workingSchedule" placeholder="Enter Experience" required>
+          <input type="text" class="form-control" id="workingSchedule" formControlName="experience" placeholder="Enter Experience" required>
         </div>
         <div class="form-floating col-md-6 p-0">
           <label for="employmentType">Salary</label>
-          <input type="text" class="form-control" id="employmentType" placeholder="Enter Salary" required>
+          <input type="text" class="form-control" id="employmentType" formControlName="salary" placeholder="Enter Salary" required>
         </div>
       </div>
       <div class="row form-group my-3">
-        <input type="date" class="form-control" id="deadline" required>
+        <input type="date" class="form-control" id="deadline" formControlName="appDeadline">
       </div>
       <div class="row form-floating my-3">
         <textarea class="form-control" id="jobDescription" [rows]="1000" cols="3" placeholder="Enter Job Description"
@@ -70,8 +79,26 @@
 
       </div>
 
+      @if(isForPosting()){
+      <button class="btn btn-primary mt-4">Post Offer</button>
+      }@else {
+        <button class="btn btn-primary mt-4">Edit Offer</button>
 
-      <button type="submit" class="btn btn-primary mt-4">Post Offer</button>
+
+      }
     </form>
+
+    <div *ngIf="addSkills" class="add-skill-window p-5">
+      <h3>Add skill</h3>
+      <div class="d-flex align-items-center">
+          <input type="text" class="form-control" value={{skill}} (input)="handleInputSkill($event)"
+              placeholder="Tap your skill here">
+          <button class="btn btn-primary mx-1 px-4" (click)="addSkillToSelect()">ADD</button>
+      </div>
+
+      <svg style="position: absolute; top: 2px; right: 2px" (click)="hideSkillWindow()" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+        </svg>
+  </div>
 
   </div>

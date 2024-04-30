@@ -1,17 +1,18 @@
 .container{
-    border: 1px solid #000;
     border-radius: 1rem;
-    position: relative;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    background-color:  #FFFFFF;
+    box-shadow: 0px 0px 5px 1px grey;
+    border: 2px solid #000;
     
     
 }
+
 form{
     position: relative;
     
+}
+form input{
+    border: 1px solid #ccc;
 }
 
 form .row{

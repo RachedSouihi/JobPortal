@@ -1,0 +1,21 @@
+.posted-job-offer-container{
+    background-color: aliceblue;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+}
+.my-posted-job-offer-title{
+    font-weight: 700;
+}
+.filter-year-month div:nth-child(1){
+    margin-left: auto;
+}
+.edit-btn, .delete-btn{
+    width: 100px;
+
+}
+
+.update-delete-app-btn{
+    display: flex;
+    justify-content: end;
+    
+}

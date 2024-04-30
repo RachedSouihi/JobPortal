@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms"
 import { Router } from '@angular/router';
+
 import { LoginService } from '../login.service';
+import { ElementRef } from 'react';
+import { Toast } from 'bootstrap';
 
 
 @Component({
@@ -12,10 +15,14 @@ import { LoginService } from '../login.service';
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.css'
 })
-export class LogInComponent {
+export class LogInComponent implements OnInit, AfterViewInit {
 
 
   loginForm: FormGroup;
+
+  @ViewChild('toast') toastElement!: ElementRef<HTMLElement>;
+
+
   screenWidth: number = window.innerWidth;
   constructor(private fb: FormBuilder, private LoginService: LoginService){
     this.loginForm = fb.group({
@@ -26,9 +33,23 @@ export class LogInComponent {
 
   }
 
+  ngOnInit(): void {
+    
+  }
+
+  ngAfterViewInit(): void {
+    const toast = new Toast(this.toastElement.nativeElement);
+    toast.show();
+    
+  }
+
+
   loggedInSuccessfully(data: any): void{
+    alert('ok')
     setTimeout(() => {
-      this.LoginService.login(data)
+      
+
+      //this.LoginService.login(data)
     }, 4000)
 
   }

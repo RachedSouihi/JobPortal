@@ -4,8 +4,9 @@
     <div class="application-parent mt-3">
         <div class="row d-flex mb-4">
             <div class="col-3 fw-bold">Job</div>
-            <div class="col-4 fw-bold">Company</div>
-            <div class="col-4 fw-bold">Date</div>
+            <div class="col fw-bold">Company</div>
+            <div class="col fw-bold">Date</div>
+            <div class="col fw-bold">Status</div>
             <div class="col sort-offer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
                     <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
@@ -18,11 +19,12 @@
         @for(submittedOffer of userData.candidacy; track submittedOffer){
         <div class="row application">
             <div class="col-3">{{submittedOffer.jobTitle}}</div>
-            <div class="col-4">{{submittedOffer.companyName}}</div>
+            <div class="col">{{submittedOffer.companyName}}</div>
             <div class="col">{{submittedOffer.timestamp}}</div>
-            <div class="col update-delete-app-btn">
-                <button class="btn btn-primary" (click)="editCandidacy(submittedOffer)">Edit</button>
-                <button class="btn btn-danger delete-app-btn" (click)="deleteCandidacy(submittedOffer.offerId, submittedOffer.hiring_mgr_id)">Delete</button>
+            <div class="col fw-bold" [ngClass]="{'text-success': submittedOffer.candidacyStatus === 1, 'text-danger': submittedOffer.candidacyStatus === 0, 'text-primary': submittedOffer.candidacyStatus === null}">{{submittedOffer.candidacyStatus == null ? "Pending" : submittedOffer.candidacyStatus === 0 ? "Rejected": "Accepted"}}</div>
+            <div class="col update-delete-app-btn" [ngStyle]="{'cursor': submittedOffer.candidacyStatus !== null && 'not-allowed'}">
+                <button class="btn btn-primary edit-app-btn"  (click)="editCandidacy(submittedOffer)" [disabled]="submittedOffer.candidacyStatus !== null">Edit</button>
+                <button class="btn btn-danger delete-app-btn" (click)="deleteCandidacy(submittedOffer.offerId, submittedOffer.hiring_mgr_id)" [disabled]="submittedOffer.candidacyStatus !== null">Delete</button>
             </div>
         </div>
         <hr>

@@ -17,8 +17,13 @@
     display: flex;
     justify-content: space-evenly;
 }
+.edit-app-btn{
+    padding-inline: 30px;
+    
+}
 
 .delete-app-btn{
+    padding-inline: 20px;
 }
 
 hr{
@@ -39,3 +44,4 @@ hr{
     text-decoration: underline;
     cursor: pointer;
 }
+

@@ -30,10 +30,9 @@ export class ApplyForJobComponent {
   skill: String = ""
   skills: any = []
   //To open a little window to make user add skill
-  openSkill: boolean = true;
+  openSkill: boolean = false;
 
 
-  isForApplying: boolean = true;
 
   userData: any;
 
@@ -56,8 +55,7 @@ export class ApplyForJobComponent {
 
 
 
-    if (activatedRoute.routeConfig?.path?.split('/')[0] === 'edit') {
-      this.isForApplying = false;
+    if (!this.isForApplying()) {
       let candidacy: any;
 
       for (let i = 0; i < this.userData.candidacy.length; i++) {
@@ -76,7 +74,7 @@ export class ApplyForJobComponent {
       this.email = candidacy.email || ''
       this.governorate = candidacy.governorate
       this.phone = candidacy.phone;
-      this.skills = candidacy.skills
+      this.skills = candidacy.skills || []
 
 
 
@@ -184,7 +182,7 @@ export class ApplyForJobComponent {
         body: formData
       })
         .then(response => response.json())
-        .then(response => { response.success ? this.JobOfferAppliedSuccessfully({ ...data, jobTitle: this.job, companyName: this.company, hiring_mgr_id: Number(this.hiring_manager_id) }) : alert('Error when applying, please try again!') })
+        .then(response => { response.success ? this.JobOfferAppliedSuccessfully({ ...data, jobTitle: this.job, companyName: this.company, hiring_mgr_id: Number(this.hiring_manager_id), candidacyStatus: null }) : alert('Error when applying, please try again!') })
         .catch(err => console.log(err.message))
     } else {
       console.log("invalid form")
@@ -200,6 +198,7 @@ export class ApplyForJobComponent {
       "userId": this.userData.userId,
       "email": this.userData.email,
       "password": this.userData.password,
+
       "isLoggedIn": this.userData.isLoggedIn,
       "candidacy": [],
     }
@@ -230,6 +229,8 @@ export class ApplyForJobComponent {
 
 
   editCandidacy(): any {
+    const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
     Object.values(this.applyForm.controls).forEach(control => {
       control.markAsTouched();
 
@@ -246,6 +247,7 @@ export class ApplyForJobComponent {
       "skills": this.skills,
       "offerId": Number(this.offer_id),
       'userId': this.userData.userId,
+      "timestamp": timestamp
 
 
     }
@@ -307,6 +309,11 @@ export class ApplyForJobComponent {
     this.cdr.detectChanges();
   })
 
+
+  isForApplying(): boolean{
+    return this.activatedRoute.routeConfig?.path?.split('/')[0] !== 'edit';
+
+  }
 
 
 

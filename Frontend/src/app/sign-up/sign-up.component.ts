@@ -22,9 +22,9 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     const localUserData = localStorage.getItem('userData');
-    if(localUserData){
+    if (localUserData) {
       console.log("LOCAL STORAGE DATA: ", JSON.parse(localUserData))
-    }else{
+    } else {
       console.log('No data in local storage!')
     }
   }
@@ -34,52 +34,58 @@ export class SignUpComponent implements OnInit {
     this.signUpForm = this.fb.group({
       firstname: ['', [Validators.required]],
       lastname: ['', [Validators.required]],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
       password: ['', [Validators.required]],
       confPassword: ['', [Validators.required]],
-    
+
       hiring_manager: [null, Validators.required]
 
 
-    }, {validator: this.passwordMatchValidator})
+    }, { validator: this.passwordMatchValidator })
 
   }
 
   passwordMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confPassword')?.value;
-    
+
     // Check if passwords match
-    return password === confirmPassword ? null : { mismatch: true };
+    return password === confirmPassword ? null : { "mismatch": true };
   }
 
   create(): void {
-    alert("submitted")
-    const { confPassword ,...userData} = this.signUpForm.value;
-    
+    Object.values(this.signUpForm.controls).forEach(control => {
+      control.markAsTouched();
 
-    fetch('http://127.0.0.1:3001/sign-up', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    });
 
-      body: JSON.stringify({userData})
-    }).then(response => response.json())
-    .then(response => {
-      if(response.success){
-        localStorage.setItem('userData', JSON.stringify({...userData, userId: response.userId, "isLoggedIn": true}))
-        setTimeout(() => {
-          
-            this.router.navigate(["/joboffer"])
-        }, 3000)
+    if (this.signUpForm.valid) {
+      const { confPassword, ...userData } = this.signUpForm.value;
 
-      }else{
-        console.log('Failed inserting data')
-      }
-    })
-    .catch(err => console.log(err.message))
+
+      fetch('http://127.0.0.1:3001/sign-up', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({ userData })
+      }).then(response => response.json())
+        .then(response => {
+          if (response.success) {
+            localStorage.setItem('userData', JSON.stringify({ ...userData, userId: response.userId, "isLoggedIn": true }))
+            setTimeout(() => {
+
+              this.router.navigate(["job-portal/joboffer"])
+            }, 3000)
+
+          } else {
+            console.log('Failed inserting data')
+          }
+        })
+        .catch(err => console.log(err.message))
+    }
   }
 
 
@@ -120,7 +126,7 @@ export class SignUpComponent implements OnInit {
   }
 
 
-  signUp(): void{
+  signUp(): void {
     alert("Sign up")
   }
 
