@@ -14,10 +14,6 @@ const upload = multer({ storage });
 
 
 
-
-
-
-
 const app = express();
 app.use(cors())
 app.use(express.json());
@@ -34,7 +30,7 @@ socketIOServer(server)
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: '242619',
+  password: '',
   database: 'JobPortal',
   waitForConnections: true,
   queueLimit: 0
