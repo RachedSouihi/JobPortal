@@ -1,5 +1,7 @@
 const express = require("express")
+const session = require('express-session')
 const cors = require('cors')
+
 const http = require('http')
 const mysql = require("mysql2");
 const multer = require('multer');
@@ -16,6 +18,11 @@ const upload = multer({ storage });
 
 const app = express();
 app.use(cors())
+app.use(session({
+  secret: "55544441414665620323dsfbhhjg",
+  resave: false,
+  saveUninitialized: true
+}))
 app.use(express.json());
 /*app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));*/
@@ -30,7 +37,7 @@ socketIOServer(server)
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: '242619',
   database: 'JobPortal',
   waitForConnections: true,
   queueLimit: 0
@@ -92,14 +99,20 @@ app.post('/sign-up', (req, res) => {
 
 app.post('/login', (req, res) => {
   const data = req.body;
-  console.log(data.email)
+  //console.log(data.email)
   pool.query(`SELECT * FROM user u, profile p WHERE u.userId=p.userId AND email='${data.email}'`, (err, result) => {
     if(err){
       res.json({err: err.message})
     }else{
       if(result[0]){
         if(result[0].password == data.password)
-          {console.log(result[0])
+          {
+            //console.log(result[0])
+          
+
+
+            
+            req.session.sk = "242619";
             res.json({success: true, data: result[0]})}
         else{
           res.json({success: false, message: "wrong password"})
@@ -334,6 +347,7 @@ app.post('/apply-for-job', upload.single('cv'), (req, res) => {
 
 
 app.get('/getAllOffer', (req, res) => {
+  console.log("Session Id is: " + req.session.sk)
 
 
   pool.query("SELECT * FROM offer", async(err, allOffer) => {
@@ -419,6 +433,17 @@ app.get('/getAllOffer', (req, res) => {
   })
   
 
+})
+.post('/candidacyStatus', (req, res) => {
+  const data = req.body;
+
+  pool.query("INSERT INTO CANDIDACY_STATUS SET ?", data, (err, result) => {
+    if(err){
+      res.json({success: false, message: err.message})
+    }else{
+      res.json({success: true})
+    }
+  })
 })
 
 server.listen(3001, () => {
