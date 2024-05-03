@@ -25,6 +25,7 @@ function socketIOServer(server){
     console.log('A user connected');
   
     socket.on('join', userId => {
+      console.log(`User with id ${userId} LogIn now`)
       socket.join(userId)
       socketToUserIdMap.set(socket.id, userId)
       
@@ -59,6 +60,11 @@ function socketIOServer(server){
       io.to(candidacyPK.hiring_mgr_id).emit("candidacyDeletedHiringManager", candidacyPK)
   
       
+    })
+
+    socket.on("candidacyStatus", data => {
+      const {seekerjob_id, ...candidacyData} = data
+      io.to(seekerjob_id).emit("candidacyStatus", candidacyData)
     })
   
     socket.on("logout", userId => {
